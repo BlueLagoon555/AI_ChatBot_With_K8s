@@ -1,0 +1,100 @@
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Environment variables and secrets
+.env
+.env.local
+.env.*.local
+*.key
+
+# Virtual environments
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs and temporary files
+*.log
+*.tmp
+*.temp
+logs/
+temp/
+
+# Documentation build files
+docs/_build/
+site/
+
+# Git files
+.git/
+.gitignore
+.gitattributes
+
+# Docker files (to avoid recursive copying)
+Dockerfile*
+docker-compose*.yml
+.dockerignore
+
+# Testing and coverage
+.coverage
+.pytest_cache/
+.tox/
+htmlcov/
+
+# Jupyter notebooks
+.ipynb_checkpoints/
+
+# Node.js (if any frontend components added later)
+node_modules/
+npm-debug.log*
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Backup files
+*.bak
+*.backup
+
+# README images and docs (they're useful to keep small)
+# Uncomment if you want to exclude documentation
+# README.md
+# docs/
