@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: ./KubenAI-API
+      dockerfile: Dockerfile
+    container_name: kubenai-api
+    ports:
+      - "8000:8000"
+    env_file:
+        - ./.env
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:8000/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+    networks:
+      - kubenai-network
+
+  ui:
+    build:
+      context: ./KubenAI-ui
+      dockerfile: Dockerfile
+    container_name: kubenai-ui
+    ports:
+      - "8501:8501"
+    env_file:
+      - ./.env
+    depends_on:
+      - api
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8501/_stcore/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - kubenai-network
+
+networks:
+  kubenai-network:
+    name: kubenai-network
