@@ -1,0 +1,79 @@
+# Azure Key Vault integration example
+apiVersion: secrets-store.csi.x-k8s.io/v1
+kind: SecretProviderClass
+metadata:
+  name: azure-openai-keyvault
+spec:
+  provider: azure
+  parameters:
+    usePodIdentity: "false"
+    useVMManagedIdentity: "true"
+    userAssignedIdentityID: "your-managed-identity-client-id"
+    keyvaultName: "your-keyvault-name"
+    objects: |
+      array:
+        - |
+          objectName: azure-openai-endpoint
+          objectType: secret
+          objectVersion: ""
+        - |
+          objectName: azure-openai-api-key
+          objectType: secret
+          objectVersion: ""
+        - |
+          objectName: azure-openai-api-version
+          objectType: secret
+          objectVersion: ""
+        - |
+          objectName: azure-openai-deployment-name
+          objectType: secret
+          objectVersion: ""
+    tenantId: "your-tenant-id"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ai-chat-assistant-keyvault
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ai-chat-assistant-keyvault
+  template:
+    metadata:
+      labels:
+        app: ai-chat-assistant-keyvault
+    spec:
+      serviceAccountName: workload-identity-sa
+      containers:
+      - name: ai-chat-assistant
+        image: myregistry.azurecr.io/ai-chat-assistant:v1.0.0
+        ports:
+        - containerPort: 8501
+        env:
+        - name: AZURE_OPENAI_ENDPOINT
+          value: "/mnt/secrets-store/azure-openai-endpoint"
+        - name: AZURE_OPENAI_API_KEY
+          value: "/mnt/secrets-store/azure-openai-api-key"
+        - name: AZURE_OPENAI_API_VERSION
+          value: "/mnt/secrets-store/azure-openai-api-version"
+        - name: AZURE_OPENAI_DEPLOYMENT_NAME
+          value: "/mnt/secrets-store/azure-openai-deployment-name"
+        volumeMounts:
+        - name: secrets-store
+          mountPath: "/mnt/secrets-store"
+          readOnly: true
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+      volumes:
+      - name: secrets-store
+        csi:
+          driver: secrets-store.csi.k8s.io
+          readOnly: true
+          volumeAttributes:
+            secretProviderClass: "azure-openai-keyvault"
