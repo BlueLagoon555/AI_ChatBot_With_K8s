@@ -4,6 +4,13 @@ A small, modular AI chat assistant stack that separates the frontend UI (KubenAI
 
 This repository contains everything you need to run both services locally using Docker. It is written to be easy to run for developers with no prior knowledge of the project.
 
+<div align="center">
+  <img src="assets/chat-interface.png" alt="KubenAI Chat Interface" width="800" style="border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);"/>
+  <p><em>KubenAI Chat Interface - Clean, modern, and ready to use</em></p>
+</div>
+
+---
+
 ## Contents
 
 - `KubenAI-API/` — FastAPI backend (exposes `/api/chat`, `/api/completion`, `/health`, and `/docs`).
